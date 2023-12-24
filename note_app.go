@@ -5,17 +5,29 @@ import (
 	"fmt"
 	"os"
 	"strings"
-	"github.com/thegera4/example/note"
+	"github.com/thegera4/dummy_note_app/note"
+	"github.com/thegera4/profit_calculator/press_enter_to_exit"
 )
 
 func main() {
 	title, content := getNoteData()
+
 	newNote, err := note.New(title, content)
 	if err != nil {
 		fmt.Println("Error: ", err)
 		return
 	}
+
 	newNote.Display()
+
+	newNoteErr := newNote.SaveToFile()
+	if newNoteErr != nil {
+		fmt.Println("Saving the note failed!")
+		return
+	}
+
+	fmt.Println("Note saved!")
+	press_enter_to_exit.WaitForEnter()
 }
 
 func getNoteData() (string, string) {
